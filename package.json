@@ -1,0 +1,25 @@
+{
+  "name": "dbparse",
+  "version": "1.0.0",
+  "description": "parse sql db",
+  "main": "parsescript.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "na"
+  },
+  "keywords": [
+    "db",
+    "sqlite3"
+  ],
+  "author": "nate t",
+  "license": "MIT",
+  "dependencies": {
+    "fast-csv": "^0.5.5",
+    "fs": "0.0.2",
+    "path": "^0.11.14",
+    "sqlite3": "^3.0.5"
+  }
+}
