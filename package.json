@@ -15,7 +15,7 @@
     "sqlite3", "https://drive.google.com/folderview?id=0B__kPfwq3UwhfnpiejBWc1pGempfeVNfaHkzTUlmdHF4OExqaW4zeHRwTjdKbzEzZkZNcWM&usp=sharing"
   ],
   "author": "nate t",
-  "license": "MIT",
+  "license": "MIT", how 
   "dependencies": {
     "fast-csv": "^0.5.5",
     "fs": "0.0.2",
