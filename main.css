@@ -1,0 +1,26 @@
+.flower{
+	position: absolute;
+		width: 1024;
+		heigh: 768px;
+		min-width: 1023px;
+		min-height: 767px;
+		
+	}
+	
+	.map{
+		
+		width:1024px;
+		height: 768px;
+		position: absolute;
+	}
+	
+	
+	.scale-line {
+  position: absolute;
+  top: 350px;
+}
+.ol-scale-line {
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select features example</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://openlayers.org/en/v3.8.1/css/ol.css" type="text/css">
+<script src="http://openlayers.org/en/v3.8.1/build/ol.js"></script>
+<link rel="stylesheet" href="main.css" type="text/css">
+</head>
+<body>
+<div class="flower">
+<button id="pan-to-london">Pan to London</button>
+
+    <div id="map" class="map"></div>
+ <div id="scale-line" class="scale-line"></div>
+
+</div>
+<script>
+var raster = new ol.layer.Tile({
+  source: new ol.source.MapQuest({layer: 'sat'}), preload: Infinity
+});
+
+/*var vector = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'data/geojson/countries.geojson',
+    format: new ol.format.GeoJSON()
+  })
+});*/
+
+var london = ol.proj.fromLonLat([-0.12755, 51.507222]);
+var moscow = ol.proj.fromLonLat([37.6178, 55.7517]);
+var istanbul = ol.proj.fromLonLat([28.9744, 41.0128]);
+var rome = ol.proj.fromLonLat([12.5, 41.9]);
+var bern = ol.proj.fromLonLat([7.4458, 46.95]);
+var madrid = ol.proj.fromLonLat([-3.683333, 40.4]);
+
+var view = new ol.View({
+  // the view's initial state
+  center: istanbul,
+  zoom: 6
+});
+
+//var controls = ol.control.defaults({rotate: false, Zoom:false}); 
+var interactions = ol.interaction.defaults({altShiftDragRotate:false, pinchRotate:false, MouseWheelZoom:false, DoubleClickZoom:false});
+
+var map = new ol.Map({
+  layers: [raster],
+  target: 'map',
+  preload:Infinity,
+interactions: [],
+ controls: [],
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 3
+  }),
+  view: view
+});
+
+
+var myScaleLine = new ol.control.ScaleLine({className: 'ol-scale-line', target: document.getElementById('scale-line')});
+map.addControl(myScaleLine);
+
+
+var spiralToMadrid = document.getElementById('pan-to-london');
+spiralToMadrid.addEventListener('click', function() {
+  var duration = 2000;
+  var start = +new Date();
+  var pan = ol.animation.pan({
+    duration: duration,
+    source: /** @type {ol.Coordinate} */ (view.getCenter()),
+    start: start
+  });
+  var bounce = ol.animation.bounce({
+    duration: duration,
+    resolution: 2 * view.getResolution(),
+    start: start
+  });
+  var rotate = ol.animation.rotate({
+    duration: duration,
+    rotation: -4 * Math.PI,
+    start: start
+  });
+  
+  var zoom = ol.animation.zoom({
+     duration: 5000,
+     zoom: 5,
+  resolution: map.getView(10).getResolution(10)
+});
+  
+  map.beforeRender(pan, bounce, zoom, rotate);
+  view.setCenter(madrid);
+  view.setZoom(10);
+}, false);
+
+</script>
+</body>
+</html>
