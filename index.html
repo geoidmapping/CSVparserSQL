@@ -11,13 +11,40 @@
 </head>
 <body>
 <div class="flower">
-<button id="pan-to-london">Pan to London</button>
+  <ul>
+  <li><a id="pan-to-london" href="#home">Home</a></li>
+  <li><a href="#news">News</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+</ul>
+
+
 
     <div id="map" class="map"></div>
  <div id="scale-line" class="scale-line"></div>
-
+ <div id="footer"></div>
 </div>
 <script>
+  
+  var styleArray = [new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: 'rgba(255, 255, 255, 0.6)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: '#319FD3',
+    width: 1
+  })
+})];
+
+var vector = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'world-110m.json',
+    format: new ol.format.TopoJSON()
+  }),
+  style: styleArray
+});
+  
+  
 var raster = new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: 'sat'}), preload: Infinity
 });
@@ -46,7 +73,7 @@ var view = new ol.View({
 var interactions = ol.interaction.defaults({altShiftDragRotate:false, pinchRotate:false, MouseWheelZoom:false, DoubleClickZoom:false});
 
 var map = new ol.Map({
-  layers: [raster],
+  layers: [raster, vector],
   target: 'map',
   preload:Infinity,
 interactions: [],
@@ -93,6 +120,54 @@ spiralToMadrid.addEventListener('click', function() {
   view.setCenter(madrid);
   view.setZoom(10);
 }, false);
+
+
+var select = null;  // ref to currently selected interaction
+
+// select interaction working on "singleclick"
+var selectSingleClick = new ol.interaction.Select();
+
+// select interaction working on "click"
+var selectClick = new ol.interaction.Select({
+  condition: ol.events.condition.click
+});
+
+// select interaction working on "mousemove"
+var selectMouseMove = new ol.interaction.Select({
+  condition: ol.events.condition.mouseMove
+});
+
+var selectElement = document.getElementById('type');
+
+ select = selectSingleClick;
+    map.addInteraction(select);
+    
+    
+/**
+ * onchange callback on the select element.
+ */
+//selectElement.onchange = changeInteraction;
+//changeInteraction();
+
+
+map.on('click', function(evt){
+    var feature = map.forEachFeatureAtPixel(evt.pixel,
+      function(feature, layer) {
+        return feature;
+      });
+    if (feature) {
+        var geometry = feature.getGeometry();
+        var coord = geometry.getCoordinates();
+        
+       // var content = '<h3>' + feature.get('name') + '</h3>';
+      var content = '<h5>' + feature.get('geomentry') + '</h5>';
+        
+       document.getElementById('footer').innerHTML = content;
+       // overlay.setPosition(coord);
+        console.log(feature.get('geometry'));
+        console.info(feature.getProperties());
+    }
+});
 
 </script>
 </body>
