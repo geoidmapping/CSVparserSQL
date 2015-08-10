@@ -23,6 +23,7 @@
     <div id="map" class="map"></div>
  <div id="scale-line" class="scale-line"></div>
  <div id="footer"></div>
+   <a class="overlay" id="vienna" target="_blank" class=bobo"" href="http://en.wikipedia.org/wiki/Vienna">Vienna</a>
 </div>
 <script>
   
@@ -36,13 +37,13 @@
   })
 })];
 
-var vector = new ol.layer.Vector({
+/*var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
     url: 'world-110m.json',
     format: new ol.format.TopoJSON()
   }),
   style: styleArray
-});
+});*/
   
   
 var raster = new ol.layer.Tile({
@@ -65,7 +66,7 @@ var madrid = ol.proj.fromLonLat([-3.683333, 40.4]);
 
 var view = new ol.View({
   // the view's initial state
-  center: istanbul,
+  center:rome,
   zoom: 6
 });
 
@@ -73,10 +74,9 @@ var view = new ol.View({
 var interactions = ol.interaction.defaults({altShiftDragRotate:false, pinchRotate:false, MouseWheelZoom:false, DoubleClickZoom:false});
 
 var map = new ol.Map({
-  layers: [raster, vector],
+  layers: [raster],
   target: 'map',
   preload:Infinity,
-interactions: [],
  controls: [],
   view: new ol.View({
     center: [0, 0],
@@ -160,14 +160,25 @@ map.on('click', function(evt){
         var coord = geometry.getCoordinates();
         
        // var content = '<h3>' + feature.get('name') + '</h3>';
-      var content = '<h5>' + feature.get('geomentry') + '</h5>';
+       // content += '<h5>' + feature.get('description') + '</h5>';
         
-       document.getElementById('footer').innerHTML = content;
+       // content_element.innerHTML = content;
        // overlay.setPosition(coord);
         console.log(feature.get('geometry'));
         console.info(feature.getProperties());
     }
 });
+
+
+var pos = ol.proj.fromLonLat([16.3725, 48.208889]);
+
+
+// Vienna label
+var vienna = new ol.Overlay({
+  position: pos,
+  element: document.getElementById('vienna')
+});
+map.addOverlay(vienna);
 
 </script>
 </body>
