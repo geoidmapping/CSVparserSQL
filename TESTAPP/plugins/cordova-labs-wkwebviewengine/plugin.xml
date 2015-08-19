@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:rim="http://www.blackberry.com/ns/widgets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-labs-wkwebviewengine"
+    version="0.3.0">
+    <name>Cordova WKWebView Engine</name>
+    <description>Cordova WKWebView Engine Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,wkwebview,webview</keywords>
+    <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugins.git</repo>
+
+	<engines>
+        <engine name="cordova-ios" version=">=4.0.0-dev" />
+	</engines>
+
+    <dependency id="cordova-labs-local-webserver" url="https://git-wip-us.apache.org/repos/asf/cordova-plugins.git#master:local-webserver" version=">=2.3.1" />
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CDVWKWebViewEngine">
+                <param name="ios-package" value="CDVWKWebViewEngine" />
+            </feature>
+            <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+        </config-file>
+
+        <framework src="WebKit.framework" weak="true" />
+
+        <header-file src="src/ios/CDVWKWebViewEngine.h" />
+        <source-file src="src/ios/CDVWKWebViewEngine.m" />
+        <header-file src="src/ios/CDVWKWebViewUIDelegate.h" />
+        <source-file src="src/ios/CDVWKWebViewUIDelegate.m" />
+
+    </platform>
+
+</plugin>
